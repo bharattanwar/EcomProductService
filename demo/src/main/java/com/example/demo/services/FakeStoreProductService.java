@@ -21,8 +21,9 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getSingleProduct(Long productId) {
-        return null;
+    public FakeStoreProductResponseDto getSingleProduct(Long productId) {
+        FakeStoreProductResponseDto fakeStoreProduct = fakeStoreClient.getSingleProduct(productId);
+        return fakeStoreProduct;
     }
 
     @Override

@@ -25,4 +25,10 @@ public class ProductController {
         List<FakeStoreProductResponseDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getSingleProduct(@PathVariable("id") Long id){
+        FakeStoreProductResponseDto product = productService.getSingleProduct(id);
+        return ResponseEntity.ok(product);
+    }
 }

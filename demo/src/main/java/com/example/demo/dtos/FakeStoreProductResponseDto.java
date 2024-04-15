@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class FakeStoreProductResponseDto {
     // here we should provide attributes matching with the keys provided by the fakestoreapi.
-    private double id;
+    private Long id;
     private String title;
     private double price;
     private String description;
