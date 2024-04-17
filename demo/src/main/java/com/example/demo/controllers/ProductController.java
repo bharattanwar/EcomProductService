@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dtos.FakeStoreProductResponseDto;
 import com.example.demo.dtos.ProductDto;
+import com.example.demo.exceptions.InvalidProductIdException;
 import com.example.demo.models.Product;
 import com.example.demo.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity getSingleProduct(@PathVariable("id") Long id){
         FakeStoreProductResponseDto product = productService.getSingleProduct(id);
+        if(id < 1){
+            throw new InvalidProductIdException("Input Id is not valid");
+        }
         return ResponseEntity.ok(product);
     }
 }

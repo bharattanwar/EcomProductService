@@ -8,7 +8,7 @@ import com.example.demo.models.Product;
 import java.util.List;
 
 public interface  ProductService {
-    List<FakeStoreProductResponseDto> getAllProducts() throws NoProductFoundException;
+    List<FakeStoreProductResponseDto> getAllProducts();
 
     FakeStoreProductResponseDto getSingleProduct(Long productId) throws ProductNotFoundException;
 

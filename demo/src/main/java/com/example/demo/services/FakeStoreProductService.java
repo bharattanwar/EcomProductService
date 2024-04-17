@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.client.FakeStoreClient;
 import com.example.demo.dtos.FakeStoreProductResponseDto;
+import com.example.demo.exceptions.InvalidProductIdException;
 import com.example.demo.exceptions.NoProductFoundException;
 import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
@@ -17,7 +18,7 @@ public class FakeStoreProductService implements ProductService{
     private FakeStoreClient fakeStoreClient;
 
     @Override
-    public List<FakeStoreProductResponseDto> getAllProducts() throws NoProductFoundException{
+    public List<FakeStoreProductResponseDto> getAllProducts(){
         List<FakeStoreProductResponseDto> fakeStoreProducts = fakeStoreClient.getAllproducts();
         if (fakeStoreProducts == null){
             throw new NoProductFoundException("No products are found");
@@ -28,7 +29,7 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public FakeStoreProductResponseDto getSingleProduct(Long productId) throws ProductNotFoundException{
         FakeStoreProductResponseDto fakeStoreProduct = fakeStoreClient.getSingleProduct(productId);
-        if (fakeStoreProduct == null){
+        if (fakeStoreProduct == null) {
             throw new ProductNotFoundException("Product not found with id = " + productId);
         }
         return fakeStoreProduct;

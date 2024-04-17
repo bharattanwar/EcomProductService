@@ -1,5 +1,6 @@
 package com.example.demo.client;
 
+import com.example.demo.dtos.FakeStoreCartResponseDto;
 import com.example.demo.dtos.FakeStoreProductResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,8 @@ public class FakeStoreClient {
     private String fakeStoreAPIBaseUrl;
     @Value("${fakestore.api.product.path}")
     private String getFakeStoreAPIProductPath;
+    @Value("${fakestore.api.cart.for.user.path}")
+    private String getFakeStoreAPICartForUserPath;
 
     // to do serialisation and deserialisation of obj to json and json to obj.
     public List<FakeStoreProductResponseDto> getAllproducts(){
@@ -35,5 +38,16 @@ public class FakeStoreClient {
                     restTemplate.getForEntity(fakeStoreGetProductURL, FakeStoreProductResponseDto.class);
         return productResponse.getBody();
     }
+    public List<FakeStoreCartResponseDto> getCartByUserId(int userId){
+        if(userId < 1){
+            return null;
+        }
+        String fakeStoreGetCartForUserURL = fakeStoreAPIBaseUrl.concat(getFakeStoreAPICartForUserPath).concat(String.valueOf(userId));
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreCartResponseDto[]> cartResponse =
+                restTemplate.getForEntity(fakeStoreGetCartForUserURL, FakeStoreCartResponseDto[].class);
+        return List.of(cartResponse.getBody());
+    }
+    /* https://fakestoreapi.com/carts?userId=1 */
 }
 
