@@ -6,7 +6,6 @@ import com.example.demo.models.Product;
 public class ProductModelDtoMapper {
     public static ProductDto convertProductModelToProductDto(Product product){
         ProductDto productDto = new ProductDto();
-        productDto.setProductId(product.getId());
         productDto.setTitle(product.getTitle());
         productDto.setPrice(product.getPrice());
         productDto.setImage(product.getImageURL());

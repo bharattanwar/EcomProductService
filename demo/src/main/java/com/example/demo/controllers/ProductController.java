@@ -6,6 +6,7 @@ import com.example.demo.exceptions.InvalidProductIdException;
 import com.example.demo.models.Product;
 import com.example.demo.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
+    @Qualifier("productserviceimpl")
     private ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -34,5 +36,11 @@ public class ProductController {
             throw new InvalidProductIdException("Input Id is not valid");
         }
         return ResponseEntity.ok(product);
+    }
+
+    @PostMapping()
+    public ResponseEntity addNewProduct(@RequestBody Product product){
+        Product savedProduct = productService.addNewProduct(product);
+        return ResponseEntity.ok(savedProduct);
     }
 }
