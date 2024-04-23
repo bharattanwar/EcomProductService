@@ -1,17 +1,16 @@
-package com.example.demo.dtos;
+package com.example.demo.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class FakeStoreProductResponseDto {
-    // here we should provide attributes matching with the keys provided by the fakestoreapi.
-    private Long id;
+public class FakeStoreProductResponseDTO {
+    private int id;
     private String title;
     private double price;
     private String description;
     private String category;
-    private String imageURL;
+    private String image;
     private FakeStoreProductRatingDTO rating;
 }

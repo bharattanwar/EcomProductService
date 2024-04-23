@@ -1,11 +1,11 @@
-package com.example.demo.dtos;
+package com.example.demo.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductQuantityDto {
+public class ProductQuantityDTO {
     private int productId;
     private int quantity;
 }

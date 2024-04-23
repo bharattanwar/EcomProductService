@@ -1,31 +1,34 @@
-package com.example.demo.controllers;
+package com.example.demo.controller;
 
 import com.example.demo.client.FakeStoreClient;
-import com.example.demo.dtos.FakeStoreCartResponseDto;
-import com.example.demo.exceptions.CartNotFoundException;
-import com.example.demo.services.CartService;
+import com.example.demo.dto.FakeStoreCartResponseDTO;
+import com.example.demo.exception.CartNotFoundException;
+import com.example.demo.exception.RandomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/cart")
 public class CartController {
 
     @Autowired
     private FakeStoreClient fakeStoreClient;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/cart/{userId}")
     public ResponseEntity getCartForUser(@PathVariable("userId") int userId){
-        List<FakeStoreCartResponseDto> cartResponse = fakeStoreClient.getCartByUserId(userId);
+        List<FakeStoreCartResponseDTO> cartResponse = fakeStoreClient.getCartByUserId(userId);
         if(cartResponse == null){
-            throw new CartNotFoundException("Cart do not exist for userId=" + userId);
+            throw new CartNotFoundException("Cart not found for userID " + userId);
         }
         return ResponseEntity.ok(cartResponse);
+    }
+
+    @GetMapping("/cartexception")
+    public ResponseEntity getCartException(){
+        throw new RandomException("Exception from cart");
     }
 }

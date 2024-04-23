@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.example.demo.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -21,7 +20,7 @@ public abstract class BaseModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @CreationTimestamp
-    private Instant createdAt; // no 0f seconds since 1 Jan 1970
+    private Instant createdAt;  // number of seconds/nanoseconds since 1 Jan, 1970 UTC
     @UpdateTimestamp
-    private Instant lastUpdatedAt;
+    private Instant updatedAt; // number of seconds/nanoseconds since 1 Jan, 1970 UTC
 }

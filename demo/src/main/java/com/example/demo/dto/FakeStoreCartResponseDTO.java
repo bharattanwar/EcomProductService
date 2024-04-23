@@ -1,4 +1,4 @@
-package com.example.demo.dtos;
+package com.example.demo.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,10 +7,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class FakeStoreCartResponseDto {
+public class FakeStoreCartResponseDTO {
     private int id;
     private int userId;
     private String date;
-    private List<ProductQuantityDto> products;
+    private List<ProductQuantityDTO> products;
     private int __v;
 }

@@ -1,7 +1,7 @@
 package com.example.demo.client;
 
-import com.example.demo.dtos.FakeStoreCartResponseDto;
-import com.example.demo.dtos.FakeStoreProductResponseDto;
+import com.example.demo.dto.FakeStoreCartResponseDTO;
+import com.example.demo.dto.FakeStoreProductResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -15,39 +15,39 @@ import java.util.List;
 public class FakeStoreClient {
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
-    @Value("${fakestore.api.base.url}")  // It will fetch value from application.properties and inject that value to this variable.
+    @Value("${fakestore.api.base.url}") // this annotation will, fetch the value from app properties and inject that value to this variable
     private String fakeStoreAPIBaseUrl;
     @Value("${fakestore.api.product.path}")
-    private String getFakeStoreAPIProductPath;
+    private String fakeStoreAPIProductPath;
     @Value("${fakestore.api.cart.for.user.path}")
-    private String getFakeStoreAPICartForUserPath;
+    private String fakeStoreAPICartForUser;
 
-    // to do serialisation and deserialisation of obj to json and json to obj.
-    public List<FakeStoreProductResponseDto> getAllproducts(){
-        String fakeStoreGetAllProductURL = fakeStoreAPIBaseUrl.concat(getFakeStoreAPIProductPath);
+    public List<FakeStoreProductResponseDTO> getAllProducts(){
+        String fakeStoreGetAllProductURL = fakeStoreAPIBaseUrl.concat(fakeStoreAPIProductPath);
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductResponseDto[]> productResponseList =
-                    restTemplate.getForEntity(fakeStoreGetAllProductURL, FakeStoreProductResponseDto[].class);
+        ResponseEntity<FakeStoreProductResponseDTO[]> productResponseList =
+                restTemplate.getForEntity(fakeStoreGetAllProductURL, FakeStoreProductResponseDTO[].class);
         return List.of(productResponseList.getBody());
-
     }
-    public FakeStoreProductResponseDto getSingleProduct(Long id){
-        String fakeStoreGetProductURL = fakeStoreAPIBaseUrl.concat(getFakeStoreAPIProductPath).concat("/" + id);
+
+    public FakeStoreProductResponseDTO getProductById(int id){
+        // url - https://fakestoreapi.com/products/id
+        String fakeStoreGetProductURL = fakeStoreAPIBaseUrl.concat(fakeStoreAPIProductPath).concat("/" + id);
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductResponseDto> productResponse =
-                    restTemplate.getForEntity(fakeStoreGetProductURL, FakeStoreProductResponseDto.class);
+        ResponseEntity<FakeStoreProductResponseDTO> productResponse =
+                restTemplate.getForEntity(fakeStoreGetProductURL, FakeStoreProductResponseDTO.class);
         return productResponse.getBody();
     }
-    public List<FakeStoreCartResponseDto> getCartByUserId(int userId){
-        if(userId < 1){
+
+    public List<FakeStoreCartResponseDTO> getCartByUserId(int userId){
+        // url - https://fakestoreapi.com/carts?userId=1
+        if(userId < 1)
             return null;
-        }
-        String fakeStoreGetCartForUserURL = fakeStoreAPIBaseUrl.concat(getFakeStoreAPICartForUserPath).concat(String.valueOf(userId));
+        String fakeStoreGetCartForUser = fakeStoreAPIBaseUrl.concat(fakeStoreAPICartForUser).concat(String.valueOf(userId));
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreCartResponseDto[]> cartResponse =
-                restTemplate.getForEntity(fakeStoreGetCartForUserURL, FakeStoreCartResponseDto[].class);
+        ResponseEntity<FakeStoreCartResponseDTO[]> cartResponse =
+                restTemplate.getForEntity(fakeStoreGetCartForUser, FakeStoreCartResponseDTO[].class);
         return List.of(cartResponse.getBody());
     }
-    /* https://fakestoreapi.com/carts?userId=1 */
 }
 

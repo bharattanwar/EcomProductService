@@ -1,19 +1,16 @@
-package com.example.demo.dtos;
+package com.example.demo.dto;
 
-import com.example.demo.models.Category;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-public class ProductDto {
-    private Long productId;
+public class ProductResponseDTO {
+    private int productId;
     private String title;
     private double price;
     private String description;
-    private String image;
     private String category;
+    private String imageURL;
     private double rating;
 }

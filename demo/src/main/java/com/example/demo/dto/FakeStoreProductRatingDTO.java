@@ -1,4 +1,4 @@
-package com.example.demo.dtos;
+package com.example.demo.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +7,5 @@ import lombok.Setter;
 @Setter
 public class FakeStoreProductRatingDTO {
     private double rate;
-    private double count;
-
+    private int count;
 }
