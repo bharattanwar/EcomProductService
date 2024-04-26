@@ -1,17 +1,16 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
-public class ProductResponseDTO {
-    private int productId;
+public class CreateProductRequestDTO {
     private String title;
     private double price;
     private String description;
-    private String category;
     private String imageURL;
-    private double rating;
+    private UUID categoryId;
 }

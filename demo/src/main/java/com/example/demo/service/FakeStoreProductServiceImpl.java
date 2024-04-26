@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.client.FakeStoreClient;
-import com.example.demo.dto.FakeStoreProductResponseDTO;
+import com.example.demo.dto.FakeStoreDTOs.FakeStoreProductResponseDTO;
 import com.example.demo.entity.Product;
 import com.example.demo.exception.NoProductPresentException;
 import com.example.demo.exception.ProductNotFoundException;

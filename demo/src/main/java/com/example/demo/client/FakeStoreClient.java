@@ -1,7 +1,7 @@
 package com.example.demo.client;
 
-import com.example.demo.dto.FakeStoreCartResponseDTO;
-import com.example.demo.dto.FakeStoreProductResponseDTO;
+import com.example.demo.dto.FakeStoreDTOs.FakeStoreCartResponseDTO;
+import com.example.demo.dto.FakeStoreDTOs.FakeStoreProductResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

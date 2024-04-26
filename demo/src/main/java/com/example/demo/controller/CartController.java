@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.client.FakeStoreClient;
-import com.example.demo.dto.FakeStoreCartResponseDTO;
+import com.example.demo.dto.FakeStoreDTOs.FakeStoreCartResponseDTO;
 import com.example.demo.exception.CartNotFoundException;
 import com.example.demo.exception.RandomException;
 import org.springframework.beans.factory.annotation.Autowired;
