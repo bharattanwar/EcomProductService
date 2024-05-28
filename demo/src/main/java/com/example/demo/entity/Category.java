@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Category extends BaseModel {
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Product> products;
 }
