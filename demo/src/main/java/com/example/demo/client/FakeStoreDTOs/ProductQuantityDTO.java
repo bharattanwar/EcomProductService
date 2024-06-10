@@ -1,4 +1,4 @@
-package com.example.demo.dto.FakeStoreDTOs;
+package com.example.demo.client.FakeStoreDTOs;
 
 import lombok.Getter;
 import lombok.Setter;

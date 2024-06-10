@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateCategoryRequestDTO {
-    private String categoryName;
+public class UserDTO {
+    private String email;
 }

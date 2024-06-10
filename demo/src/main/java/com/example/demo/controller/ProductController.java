@@ -1,68 +1,99 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CreateProductRequestDTO;
 import com.example.demo.dto.ProductResponseDTO;
-import com.example.demo.exception.InvalidInputException;
+import com.example.demo.entity.Category;
 import com.example.demo.entity.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+@RequestMapping("/products")
 @RestController
-@RequestMapping("/product") // base URL for all the APIs in this controller
 public class ProductController {
-
     @Autowired
-    @Qualifier("productService")
-    private ProductService productService; // field injection
+    ProductService productService;
 
-    @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-        List<ProductResponseDTO> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping("/{userId}/{productId}")
+    public Product getProductDetails(@PathVariable Long userId,@PathVariable Long productId){
+        return productService.getProductDetails(userId,productId);
+    }
+
+
+    @GetMapping("")
+    public ResponseEntity<List<Product>> getProducts(){
+        try{
+            List<Product>products=new ArrayList<>();
+            products= productService.getProducts();
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable("id") UUID id) {
-        if (id == null) {
-            throw new InvalidInputException("Input is not correct");
+    public ResponseEntity<Product> getProducts(@PathVariable(value="id") long ids){
+        try{
+            if(ids<1) {
+                throw new IllegalArgumentException("Product Id is <1");
+            }
+            Product product= productService.getProduct(ids);
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        }catch (Exception e){
+            //  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw e;
         }
-        return ResponseEntity.ok(productService.getProduct(id));
     }
 
-    @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody CreateProductRequestDTO productRequestDTO) {
-        return ResponseEntity.ok(productService.createProduct(productRequestDTO));
+    @PostMapping("")
+    public Product createProduct(@RequestBody ProductResponseDTO productDTO){
+        Product product=getProductFromDto((productDTO));
+        return productService.createProduct(product);
+    }
+    //Partial Changes -> patchMapping
+    //Replacing Complete Object ->putMapping
+    @PatchMapping("{id}")
+    public Product updateProduct(@PathVariable Long id,@RequestBody ProductResponseDTO productDTO){
+        Product product=getProductFromDto(productDTO);
+        return productService.updateProduct(id,product);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable("id") UUID id, @RequestBody CreateProductRequestDTO productRequestDTO) {
-        return ResponseEntity.ok(productService.updateProduct(productRequestDTO, id));
+    @PutMapping("{id}")
+    public ResponseEntity<String> putProduct(@PathVariable Long id,@RequestBody ProductResponseDTO productDTO){
+        Product product=getProductFromDto(productDTO);
+        productService.putProduct(id,product);
+
+        return new ResponseEntity<String>("updated Successfully ",HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteProduct(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(
-                productService.deleteProduct(id)
-        );
+    @DeleteMapping("{id}")
+    public ResponseEntity<String>deleteProduct(@PathVariable Long id){
+        String message=productService.deleteProduct(id);
+        return new ResponseEntity<String>(message,HttpStatus.OK);
     }
 
-    @GetMapping("/name/{productName}")
-    public ResponseEntity<ProductResponseDTO> getProductByProductName(@PathVariable("productName") String productName) {
-        return ResponseEntity.ok(
-                productService.getProduct(productName)
-        );
-    }
+    //Product(Internal Implementation cannot be exposed & widely accepted) is sent to service layer by controller
+    //so the productDTo(sent by External User) is converted to Product in the below method
+    private Product getProductFromDto(ProductResponseDTO productDTO){//productDtO -> received from User
+        Product product = new Product();
+        product.setId(productDTO.getProductId());
+        product.setTitle(productDTO.getTitle());
+        product.setPrice(productDTO.getPrice());
+        product.setDescription(productDTO.getDescription());
+        product.setImage(productDTO.getImageURL());
+        Category category=new Category();
+        category.setName(productDTO.getCategory());
+        product.setCategory(category);
 
-    @GetMapping("/{min}/{max}")
-    public ResponseEntity getProductByPriceRange(@PathVariable("min") double minPrice, @PathVariable("max") double maxPrice) {
-        return ResponseEntity.ok(
-                productService.getProducts(minPrice, maxPrice)
-        );
+        return product;
     }
 }
+

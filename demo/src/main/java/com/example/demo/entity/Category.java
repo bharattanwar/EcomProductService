@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -13,10 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-public class Category extends BaseModel {
+public class Category extends BaseModel{
     private String name;
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Product> products;
+    private String description;
+    @OneToMany(mappedBy = "category" ,fetch =FetchType.EAGER)
+    @JsonBackReference
+    private List<Product> product;
 }

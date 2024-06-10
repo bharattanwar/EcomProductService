@@ -17,8 +17,8 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class BaseModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @CreationTimestamp
     private Instant createdAt;  // number of seconds/nanoseconds since 1 Jan, 1970 UTC
     @UpdateTimestamp

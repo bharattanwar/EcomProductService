@@ -1,7 +1,6 @@
 package com.example.demo.client;
 
-import com.example.demo.dto.FakeStoreDTOs.FakeStoreCartResponseDTO;
-import com.example.demo.dto.FakeStoreDTOs.FakeStoreProductResponseDTO;
+import com.example.demo.client.FakeStoreDTOs.FakeStoreProductResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,41 +12,34 @@ import java.util.List;
 
 @Component
 public class FakeStoreClient {
-    @Autowired
     private RestTemplateBuilder restTemplateBuilder;
-    @Value("${fakestore.api.base.url}") // this annotation will, fetch the value from app properties and inject that value to this variable
-    private String fakeStoreAPIBaseUrl;
-    @Value("${fakestore.api.product.path}")
-    private String fakeStoreAPIProductPath;
-    @Value("${fakestore.api.cart.for.user.path}")
-    private String fakeStoreAPICartForUser;
 
-    public List<FakeStoreProductResponseDTO> getAllProducts(){
-        String fakeStoreGetAllProductURL = fakeStoreAPIBaseUrl.concat(fakeStoreAPIProductPath);
-        RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductResponseDTO[]> productResponseList =
-                restTemplate.getForEntity(fakeStoreGetAllProductURL, FakeStoreProductResponseDTO[].class);
-        return List.of(productResponseList.getBody());
+    public FakeStoreClient(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    public FakeStoreProductResponseDTO getProductById(int id){
-        // url - https://fakestoreapi.com/products/id
-        String fakeStoreGetProductURL = fakeStoreAPIBaseUrl.concat(fakeStoreAPIProductPath).concat("/" + id);
-        RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductResponseDTO> productResponse =
-                restTemplate.getForEntity(fakeStoreGetProductURL, FakeStoreProductResponseDTO.class);
-        return productResponse.getBody();
+    public FakeStoreProductResponseDTO getProduct(long productID) {//get the particular/Specific details of the product with id
+        RestTemplate restTemplate=restTemplateBuilder.build();
+        FakeStoreProductResponseDTO fakeStoreProductDTO=restTemplate.getForEntity("https://fakestoreapi.com/products/{id}", FakeStoreProductResponseDTO.class,productID).getBody();
+        //conversion logic of ProductDto to Product
+        return fakeStoreProductDTO;
     }
 
-    public List<FakeStoreCartResponseDTO> getCartByUserId(int userId){
-        // url - https://fakestoreapi.com/carts?userId=1
-        if(userId < 1)
-            return null;
-        String fakeStoreGetCartForUser = fakeStoreAPIBaseUrl.concat(fakeStoreAPICartForUser).concat(String.valueOf(userId));
-        RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreCartResponseDTO[]> cartResponse =
-                restTemplate.getForEntity(fakeStoreGetCartForUser, FakeStoreCartResponseDTO[].class);
-        return List.of(cartResponse.getBody());
+   /* public void deleteProduct(Long productId){
+        RestTemplate restTemplate=restTemplateBuilder.build();
+        restTemplate.delete("https://fakestoreapi.com/products/{id}");
+    }*/
+
+    public FakeStoreProductResponseDTO createProduct(FakeStoreProductResponseDTO fakeStoreProductDTO) {//create / add the Product
+        RestTemplate restTemplate=restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductResponseDTO> fakeStoreProductDTOResponseEntity=restTemplate.postForEntity("https://fakestoreapi.com/products",fakeStoreProductDTO,FakeStoreProductResponseDTO.class);
+        return fakeStoreProductDTOResponseEntity.getBody();
     }
+
+    /*public FakeStoreProductDTO updateProduct(FakeStoreProductDTO fakeStoreProductDTO){
+        RestTemplate restTemplate=restTemplateBuilder.build();
+        FakeStoreProductDTO fakeStoreProductDTO1=restTemplate.patchForObject("https://fakestoreapi.com/products/{id}",fakeStoreProductDTO,FakeStoreProductDTO.class);
+        return fakeStoreProductDTO1;
+    }*/
+
 }
-
