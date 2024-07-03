@@ -1,26 +1,22 @@
 package com.example.demo.client;
 
-import com.example.demo.client.FakeStoreDTOs.FakeStoreProductResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.demo.client.FakeStoreDTOs.FakeStoreProductDTO;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
 @Component
-public class FakeStoreClient {
+public class FakeStoreApiClient {
     private RestTemplateBuilder restTemplateBuilder;
 
-    public FakeStoreClient(RestTemplateBuilder restTemplateBuilder) {
+    public FakeStoreApiClient(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    public FakeStoreProductResponseDTO getProduct(long productID) {//get the particular/Specific details of the product with id
+    public FakeStoreProductDTO getProduct(long productID) {//get the particular/Specific details of the product with id
         RestTemplate restTemplate=restTemplateBuilder.build();
-        FakeStoreProductResponseDTO fakeStoreProductDTO=restTemplate.getForEntity("https://fakestoreapi.com/products/{id}", FakeStoreProductResponseDTO.class,productID).getBody();
+        FakeStoreProductDTO fakeStoreProductDTO=restTemplate.getForEntity("https://fakestoreapi.com/products/{id}", FakeStoreProductDTO.class,productID).getBody();
         //conversion logic of ProductDto to Product
         return fakeStoreProductDTO;
     }
@@ -30,9 +26,9 @@ public class FakeStoreClient {
         restTemplate.delete("https://fakestoreapi.com/products/{id}");
     }*/
 
-    public FakeStoreProductResponseDTO createProduct(FakeStoreProductResponseDTO fakeStoreProductDTO) {//create / add the Product
+    public FakeStoreProductDTO createProduct(FakeStoreProductDTO fakeStoreProductDTO) {//create / add the Product
         RestTemplate restTemplate=restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductResponseDTO> fakeStoreProductDTOResponseEntity=restTemplate.postForEntity("https://fakestoreapi.com/products",fakeStoreProductDTO,FakeStoreProductResponseDTO.class);
+        ResponseEntity<FakeStoreProductDTO> fakeStoreProductDTOResponseEntity=restTemplate.postForEntity("https://fakestoreapi.com/products",fakeStoreProductDTO,FakeStoreProductDTO.class);
         return fakeStoreProductDTOResponseEntity.getBody();
     }
 

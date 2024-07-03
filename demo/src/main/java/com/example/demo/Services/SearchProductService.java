@@ -1,11 +1,9 @@
-package com.example.demo.service.serviceImpls;
+package com.example.demo.Services;
 
 import com.example.demo.entity.Product;
 import com.example.demo.entity.SortParam;
 import com.example.demo.entity.SortType;
 import com.example.demo.repository.ProductRepository;
-import com.example.demo.service.SearchProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,12 +12,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SearchProductServiceImpl implements SearchProductService {
-    @Autowired
+public class SearchProductService {
     private ProductRepository productRepository;
 
-    @Override
-    public Page<Product> searchProduct(String query, int pageNumber, int pageSize, List<SortParam> sortParamLists) {
+    public SearchProductService(ProductRepository productRepo){
+        this.productRepository = productRepository;
+    }
+
+    public Page<Product> searchProduct(String query, int pageNumber, int pageSize, List<SortParam> sortParamLists){
+        // Sort sort=Sort.by("price").descending();
+
         Sort sort=null;
         if(!sortParamLists.isEmpty()){
             if(sortParamLists.get(0).getSortType().equals(SortType.Asc)){

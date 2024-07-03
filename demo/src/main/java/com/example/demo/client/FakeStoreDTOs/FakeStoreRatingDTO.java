@@ -2,10 +2,12 @@ package com.example.demo.client.FakeStoreDTOs;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class FakeStoreProductRatingDTO {
+@ToString
+public class FakeStoreRatingDTO {
     private double rate;
-    private int count;
+    private long count;
 }

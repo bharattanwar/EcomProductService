@@ -1,9 +1,8 @@
-package com.example.demo.service.serviceImpls;
+package com.example.demo.Services;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.Product;
 import com.example.demo.repository.ProductRepository;
-import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -13,11 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StorageProductService implements ProductService {
+public class StorageProductService implements IProductServices{
     //this class will interact with ProductRepo
 
     @Autowired
-    private ProductRepository productRepo;
+    private ProductRepository productRepository;
 
     @Bean
     public RestTemplate restTemplate(){
@@ -26,7 +25,7 @@ public class StorageProductService implements ProductService {
 
     @Override
     public Product getProductDetails(Long userId, Long productId){
-        Product product = productRepo.findById(productId).get();
+        Product product=productRepository.findById(productId).get();
         System.out.println(product.getTitle());
 
         RestTemplate restTemplate1=restTemplate();
@@ -46,12 +45,12 @@ public class StorageProductService implements ProductService {
 
     @Override
     public Product getProduct(long id) {
-        return productRepo.findById(id).get();
+        return productRepository.findById(id).get();
     }
 
     @Override
     public Product createProduct(Product product) {
-        return productRepo.save(product);
+        return productRepository.save(product);
     }
 
     @Override
@@ -61,9 +60,9 @@ public class StorageProductService implements ProductService {
 
     @Override
     public String deleteProduct(Long id) {
-        Optional<Product> optionalProduct=productRepo.findById(id);
+        Optional<Product> optionalProduct=productRepository.findById(id);
         if(!optionalProduct.isEmpty()){
-            productRepo.deleteById(id);
+            productRepository.deleteById(id);
             return "Deleted Successfully";
         }
         return "product not present";

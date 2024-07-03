@@ -1,14 +1,13 @@
-package com.example.demo.service;
+package com.example.demo.Services;
 
-import com.example.demo.dto.ProductResponseDTO;
 import com.example.demo.entity.Product;
 
 import java.util.List;
 
-public interface ProductService {
-    Product getProductDetails(Long userId,Long productId);
+public interface IProductServices {
+    Product getProductDetails(Long userId, Long productId);
 
-    List<Product>  getProducts();
+    List<Product> getProducts();
 
     Product getProduct(long id);
 
@@ -20,5 +19,4 @@ public interface ProductService {
 
     void putProduct(Long id,Product product);
 }
-
 
